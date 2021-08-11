@@ -1,9 +1,12 @@
 package com.empApp.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +28,15 @@ public class EmployeeController {
 	DepartmentService departmentService;
 	
 	@GetMapping("/getEmployees")
-	public ResponseEntity<String> getEmployees() {
+	public ResponseEntity<List<Employee>> getEmployees() {
 		
-		return new ResponseEntity<String>("Employee : ABC", HttpStatus.OK);
-		
+		return new ResponseEntity<List<Employee>>(service.getEmployees(), HttpStatus.OK);
+	
+	}
+	
+	@GetMapping("/getEmployees/{id}")
+	public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer id) {
+		return new ResponseEntity<Employee>(service.getEmployeeById(id),HttpStatus.OK);
 	}
 	
 	@PostMapping("/addEmployee")

@@ -1,5 +1,7 @@
 package com.empApp.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,15 @@ public class DepartmentService {
 
 	@Autowired
 	DepartmentRepository repository;
+
+	public List<Department> getDepartments(){
+		return repository.findAll();
+	}
+	
+	public Department getDepartmentById(Integer id) {
+		return repository.findById(id).orElse(null);
+	}
+	
 	
 	public boolean saveDepartment(Department dept) {
 		
@@ -23,8 +34,5 @@ public class DepartmentService {
 		}
 		
 	}
-	
-	public Department getDepartmentById(Integer id) {
-		return repository.getById(id);
-	}
+
 }
