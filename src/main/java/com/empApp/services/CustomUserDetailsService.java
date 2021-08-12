@@ -1,21 +1,27 @@
 package com.empApp.services;
 
-import java.util.ArrayList;
-
-import org.springframework.security.core.userdetails.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.empApp.repository.UserRepository;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
+	@Autowired
+	private UserRepository repository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		if(username.equals("kaustubh")) {
-			return new User("kaustubh", "kaustubh123", new ArrayList<>());
+		com.empApp.models.User user = repository.getById(username);
+		
+		
+		if(username!=null) {
+			return new CustomUserDetails(user);
 		}else {
 			throw new UsernameNotFoundException("User not found");
 		}
