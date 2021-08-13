@@ -34,9 +34,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.cors().disable()
 		.authorizeRequests()
-		.antMatchers("/token").permitAll()
-		.antMatchers("/addUser").permitAll()
-		.antMatchers("/getUsers").permitAll()
+		.antMatchers("/emp/api/v1/emp").hasAuthority("ROLE_ADMIN")
+		.antMatchers("/emp/api/v1/dept").hasAuthority("ROLE_NORMAL")
+		.antMatchers("/emp/api/v1/public/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

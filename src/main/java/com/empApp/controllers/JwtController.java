@@ -19,6 +19,7 @@ import com.empApp.services.CustomUserDetailsService;
 
 
 @RestController
+@RequestMapping("/emp/api/v1/public")
 public class JwtController {
 
 	@Autowired

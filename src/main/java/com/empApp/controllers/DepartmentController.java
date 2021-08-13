@@ -16,7 +16,7 @@ import com.empApp.models.Department;
 import com.empApp.services.DepartmentService;
 
 @RestController
-@RequestMapping("/emp/api/v1/public")
+@RequestMapping("/emp/api/v1/dept")
 public class DepartmentController {
 	
 	@Autowired
