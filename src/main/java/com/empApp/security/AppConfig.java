@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.empApp.services.CustomUserDetailsService;
@@ -20,6 +21,7 @@ import com.empApp.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class AppConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
@@ -34,9 +36,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.cors().disable()
 		.authorizeRequests()
-		.antMatchers("/emp/api/v1/emp").hasAuthority("ROLE_ADMIN")
-		.antMatchers("/emp/api/v1/dept").hasAuthority("ROLE_NORMAL")
-		.antMatchers("/emp/api/v1/public/**").permitAll()
+			.antMatchers("/emp/api/v1/public/**").permitAll()
+			.antMatchers("/emp/api/v1/emp/**").hasRole("ADMIN")
+			.antMatchers("/emp/api/v1/dept/**").hasRole("USER")
 		.anyRequest().authenticated()
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -46,13 +48,28 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(customUserDetailsService).passwordEncoder(getPasswordEncoder());
-	}
+		//auth.userDetailsService(customUserDetailsService).passwordEncoder(getPasswordEncoder());
+		 auth.authenticationProvider(authenticationProvider());
+	}  
 
 	@Bean
 	public BCryptPasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	 @Bean
+    public UserDetailsService userDetailsService() {
+        return customUserDetailsService;
+    }
+
+	 @Bean
+	    public DaoAuthenticationProvider authenticationProvider() {
+	        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	        authProvider.setUserDetailsService(userDetailsService());
+	        authProvider.setPasswordEncoder(getPasswordEncoder());
+	         
+	        return authProvider;
+	    }
 
 	@Bean
 	@Override

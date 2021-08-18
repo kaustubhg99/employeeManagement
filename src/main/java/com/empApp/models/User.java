@@ -1,26 +1,41 @@
 package com.empApp.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
 
 @Entity
 public class User {
 
-	@Id
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
 	private String username;
 	private String password;
 	private String email;
-	private String role;
-	public User() {
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+            )
+    private Set<Role> roles = new HashSet<>();
+	
+	public User(Long id, String username, String password, String email, Set<Role> roles) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-	public User(String username, String password, String email, String role) {
-		super();
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.role = role;
+		this.roles = roles;
+	}
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	public String getUsername() {
 		return username;
@@ -40,15 +55,16 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getRole() {
-		return role;
+	
+	public Set<Role> getRoles() {
+		return roles;
 	}
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + "]";
+		return "User [username=" + username + ", password=" + password + ", email=" + email + ", roles=" + roles + "]";
 	}
 	
 	
