@@ -18,7 +18,7 @@ import com.empApp.services.DepartmentService;
 import com.empApp.services.EmployeeService;
 
 @RestController
-@RequestMapping("/emp/api/v1/public")
+@RequestMapping("/emp/api/v1/emp")
 public class EmployeeController {
 
 	@Autowired

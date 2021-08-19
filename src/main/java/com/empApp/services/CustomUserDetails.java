@@ -1,12 +1,16 @@
 package com.empApp.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.empApp.models.Role;
 import com.empApp.models.User;
 
 public class CustomUserDetails implements UserDetails{
@@ -23,9 +27,13 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 	 
-		HashSet<SimpleGrantedAuthority> set = new HashSet<>();
-		set.add(new SimpleGrantedAuthority(this.user.getRole()));
-		return set;
+		Set<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+         
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
+		return authorities;
 	}
 
 	@Override
@@ -37,7 +45,7 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return this.user.getPassword();
+		return this.user.getUsername();
 	}
 
 	@Override
