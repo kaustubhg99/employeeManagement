@@ -48,7 +48,7 @@ public class EmployeeController {
 			if (service.saveEmployee(emp)==true) {
 				return new ResponseEntity<String>("Employee Save", HttpStatus.OK);
 			}else {
-				return new ResponseEntity<String>("Employee Not Saved", HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<String>("Employee not Saved", HttpStatus.BAD_REQUEST);
 			}
 		}else {
 			return new ResponseEntity<String>("Employee Not Saved", HttpStatus.BAD_REQUEST);
