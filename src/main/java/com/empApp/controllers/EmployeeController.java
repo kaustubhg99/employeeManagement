@@ -16,6 +16,7 @@ import com.empApp.models.Department;
 import com.empApp.models.Employee;
 import com.empApp.services.DepartmentService;
 import com.empApp.services.EmployeeService;
+import com.empApp.services.ResponseService;
 
 @RestController
 @RequestMapping("/emp/api/v1/emp")
@@ -28,15 +29,17 @@ public class EmployeeController {
 	DepartmentService departmentService;
 	
 	@GetMapping("/getEmployees")
-	public ResponseEntity<List<Employee>> getEmployees() {
+	public ResponseEntity<ResponseService<List<Employee>>> getEmployees() {
 		
-		return new ResponseEntity<List<Employee>>(service.getEmployees(), HttpStatus.OK);
+		return new ResponseEntity<ResponseService<List<Employee>>>(new ResponseService<List<Employee>>(service.getEmployees(), "Success", true), HttpStatus.ACCEPTED);
+	//	return new ResponseEntity<List<Employee>>(service.getEmployees(), HttpStatus.OK);
 	
 	}
 	
 	@GetMapping("/getEmployees/{id}")
-	public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Integer id) {
-		return new ResponseEntity<Employee>(service.getEmployeeById(id),HttpStatus.OK);
+	public ResponseService<Employee> getEmployeeById(@PathVariable("id") Integer id) {
+		
+		return new ResponseService<Employee>(service.getEmployeeById(id), "Success", true);
 	}
 	
 	@PostMapping("/addEmployee")
