@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 @Component
 public class JwtUtil implements Serializable{
@@ -33,6 +34,7 @@ public class JwtUtil implements Serializable{
 	}
     //for retrieveing any information from token we will need the secret key
 	private Claims getAllClaimsFromToken(String token) {
+		
 		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 	}
 	//check if the token has expired

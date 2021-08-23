@@ -34,9 +34,11 @@ public class EmployeeController {
 	DepartmentService departmentService;
 	
 	@GetMapping("/getEmployees")
-	public ResponseEntity<List<Employee>> getEmployees() {
-		
-		return new ResponseEntity<List<Employee>>(service.getEmployees(), HttpStatus.OK);
+	public ResponseEntity<ApiResponse> getEmployees() {
+		List<Employee> empl = service.getEmployees();
+		System.out.println(empl);
+		ApiResponse response = new ApiResponse(empl, new ResponseStatus(new Date(), "", true));
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	
 	}
 	
@@ -44,10 +46,8 @@ public class EmployeeController {
 	public ResponseEntity<ApiResponse> getEmployeeById(@PathVariable("id") Integer id) {
 		Employee empl = service.getEmployeeById(id);
 	
-		Map<String, Object> hashMap = new HashMap<String, Object>();
-		hashMap.put("data", empl);
-		hashMap.put("status", new ResponseStatus(new Date(), "", true));
-		ApiResponse response = new ApiResponse(hashMap);
+		System.out.println(empl);
+		ApiResponse response = new ApiResponse(empl, new ResponseStatus(new Date(), "", true));
 		
 		return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);		
 	}
