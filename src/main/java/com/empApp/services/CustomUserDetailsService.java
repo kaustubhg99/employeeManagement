@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.empApp.customExceptions.UserNotExistException;
 import com.empApp.models.User;
 import com.empApp.repository.UserRepository;
 
@@ -26,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 		if(user!=null) {
 			return new CustomUserDetails(user);
 		}else {
-			throw new UsernameNotFoundException("User not found");
+			throw new UserNotExistException("User not found",false);
 		}
 		
 

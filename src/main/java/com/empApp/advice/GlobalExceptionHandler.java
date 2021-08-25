@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.empApp.controllers.EmpNotFoundException;
+import com.empApp.customExceptions.EmpNotFoundException;
+import com.empApp.customExceptions.UserNotExistException;
 import com.empApp.models.ApiResponse;
 import com.empApp.models.ResponseStatus;
 
@@ -25,9 +26,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<ApiResponse> userNotFoundExceptionHandler(UsernameNotFoundException usernameNotFoundException){
-		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "You dont have access to resources. please contact to Admin", false));
+	@ExceptionHandler(UserNotExistException.class)
+	public ResponseEntity<ApiResponse> UserNotExistExceptionHandler(UserNotExistException usernameNotFoundException){
+		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "Please check your credentials", false));
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.NOT_FOUND);
 	}
 	

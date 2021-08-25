@@ -1,6 +1,6 @@
-package com.empApp.controllers;
+package com.empApp.customExceptions;
 
-public class EmpNotFoundException extends RuntimeException {
+public class UserNotExistException extends RuntimeException{
 
 	/**
 	 * 
@@ -10,7 +10,7 @@ public class EmpNotFoundException extends RuntimeException {
 	private String message;
 	private boolean status;
 	
-	public EmpNotFoundException(String message, boolean status) {
+	public UserNotExistException(String message, boolean status) {
 		super();
 		this.message = message;
 		this.status = status;
@@ -36,7 +36,5 @@ public class EmpNotFoundException extends RuntimeException {
 		return serialVersionUID;
 	}
 	
-	
-	
-	
+
 }
