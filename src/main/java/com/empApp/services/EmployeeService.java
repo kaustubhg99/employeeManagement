@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.empApp.controllers.EmpNotFoundException;
+import com.empApp.customExceptions.EmpNotFoundException;
 import com.empApp.models.Employee;
 import com.empApp.repository.EmployeeRepository;
 
