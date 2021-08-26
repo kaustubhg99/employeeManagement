@@ -1,7 +1,11 @@
 package com.empApp.controllers;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.empApp.models.ApiResponse;
 import com.empApp.models.Department;
 import com.empApp.models.Employee;
+import com.empApp.models.ResponseStatus;
 import com.empApp.services.DepartmentService;
 import com.empApp.services.EmployeeService;
 import com.empApp.services.ResponseService;
@@ -37,9 +43,15 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/getEmployees/{id}")
-	public ResponseService<Employee> getEmployeeById(@PathVariable("id") Integer id) {
+	public ResponseEntity<ApiResponse> getEmployeeById(@PathVariable("id") Integer id) {
+		Employee empl = service.getEmployeeById(id);
+	
+		Map<String, Object> hashMap = new HashMap<String, Object>();
+		hashMap.put("data", empl);
+		hashMap.put("status", new ResponseStatus(new Date(), "", true));
+		ApiResponse response = new ApiResponse(hashMap);
 		
-		return new ResponseService<Employee>(service.getEmployeeById(id), "Success", true);
+		return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);		
 	}
 	
 	@PostMapping("/addEmployee")
