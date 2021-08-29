@@ -16,8 +16,15 @@ public class EmployeeService {
 	EmployeeRepository repository;
 	
 	public boolean saveEmployee(Employee emp) {
-		repository.save(emp);
-		return true;
+		Employee empAdded = repository.save(emp);
+		
+		if(empAdded!=null) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
 	}
 	
 	public List<Employee> getEmployees(){

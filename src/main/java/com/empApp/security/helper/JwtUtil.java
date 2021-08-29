@@ -40,6 +40,8 @@ public class JwtUtil implements Serializable{
 	//check if the token has expired
 	private Boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
+		
+		
 		return expiration.before(new Date());
 	}
 	//generate token for user
@@ -62,6 +64,10 @@ public class JwtUtil implements Serializable{
 	//validate token
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
+		
+		System.out.println("== check Expired ==");
+		System.out.println("is Token Expired : "+isTokenExpired(token));
+		
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 }

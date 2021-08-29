@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.empApp.customExceptions.EmpNotFoundException;
+import com.empApp.customExceptions.ExpiredJwt;
 import com.empApp.customExceptions.UserNotExistException;
 import com.empApp.models.ApiResponse;
 import com.empApp.models.ResponseStatus;
@@ -36,5 +37,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<ApiResponse> badCredentialsExceptionHandler(BadCredentialsException badCredentialsException){
 		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "Please check your credentials", false));
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ExpiredJwt.class)
+	public ResponseEntity<ApiResponse> expiredJwtHandler(ExpiredJwt expiredJwt){
+		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "Token is expired please login again", false));
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.FORBIDDEN);
 	}
 }

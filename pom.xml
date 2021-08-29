@@ -40,6 +40,13 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		
+		<!-- JSON Object -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20180130</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>

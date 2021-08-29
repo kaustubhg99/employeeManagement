@@ -1,11 +1,8 @@
 package com.empApp.controllers;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,18 +50,21 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/addEmployee")
-	public ResponseEntity<String> addEmployee(@RequestBody Employee emp){	
+	public ResponseEntity<ApiResponse> addEmployee(@RequestBody Employee emp){	
 		
 		Department dept = departmentService.getDepartmentById(emp.getDept().getDept_Id());
-		
+
 		if(dept!=null) {
 			if (service.saveEmployee(emp)==true) {
-				return new ResponseEntity<String>("Employee Save", HttpStatus.OK);
+				ApiResponse response = new ApiResponse(emp, new ResponseStatus(new Date(), "New Employee Added successfully,", true));
+				return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 			}else {
-				return new ResponseEntity<String>("Employee Not Saved", HttpStatus.BAD_REQUEST);
+				ApiResponse response = new ApiResponse(null, new ResponseStatus(new Date(), "failed to add New Employee.", false));
+				return new ResponseEntity<ApiResponse>(response, HttpStatus.BAD_REQUEST);
 			}
 		}else {
-			return new ResponseEntity<String>("Employee Not Saved", HttpStatus.BAD_REQUEST);
+			ApiResponse response = new ApiResponse(null, new ResponseStatus(new Date(), "Wrong department selected", false));
+			return new ResponseEntity<ApiResponse>(response, HttpStatus.NOT_FOUND);
 		}
 		
 		
