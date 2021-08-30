@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.empApp.customExceptions.EmpNotFoundException;
+import com.empApp.customExceptions.UnAuthorizedException;
 import com.empApp.customExceptions.UserNotExistException;
 import com.empApp.models.ApiResponse;
 import com.empApp.models.ResponseStatus;
@@ -31,6 +32,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "Please check your credentials", false));
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(UnAuthorizedException.class)
+	public ResponseEntity<ApiResponse> UnAuthorizedExceptionHandler(UnAuthorizedException noAccessExceltion){
+		ApiResponse response = new ApiResponse("", new ResponseStatus(new Date(), "You dont have access to this data", false));
+		return new ResponseEntity<ApiResponse>(response, HttpStatus.NOT_FOUND);
+	}
+	
 	
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ApiResponse> badCredentialsExceptionHandler(BadCredentialsException badCredentialsException){

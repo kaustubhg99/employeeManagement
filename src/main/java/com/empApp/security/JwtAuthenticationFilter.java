@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.empApp.customExceptions.UnAuthorizedException;
 import com.empApp.security.helper.JwtUtil;
 import com.empApp.services.CustomUserDetailsService;
 
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 				username = this.jwtUtil.getUsernameFromToken(jwtToken);
 				
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new UnAuthorizedException("You dont have access to this data", false);
 			}
 			
 			

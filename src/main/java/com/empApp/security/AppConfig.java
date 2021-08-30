@@ -13,8 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.empApp.customExceptions.CustomAuthenticationEntryPoint;
+import com.empApp.customExceptions.UnAuthorizedException;
+import com.empApp.customExceptions.UserNotExistException;
 import com.empApp.services.CustomUserDetailsService;
 
 
@@ -40,6 +45,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers("/emp/api/v1/emp/**").hasRole("ADMIN")
 			.antMatchers("/emp/api/v1/dept/**").hasRole("USER")
 		.anyRequest().authenticated()
+		.and()
+		.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
@@ -76,4 +83,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(){
+        return new CustomAuthenticationEntryPoint();
+    }
 }
