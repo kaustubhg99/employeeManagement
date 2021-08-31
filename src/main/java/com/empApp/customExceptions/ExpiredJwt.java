@@ -1,7 +1,6 @@
 package com.empApp.customExceptions;
 
-public class EmpNotFoundException extends RuntimeException {
-
+public class ExpiredJwt extends RuntimeException{
 	/**
 	 * 
 	 */
@@ -10,11 +9,7 @@ public class EmpNotFoundException extends RuntimeException {
 	private String message;
 	private boolean status;
 	
-	public EmpNotFoundException() {
-		super();
-	}
-
-	public EmpNotFoundException(String message, boolean status) {
+	public ExpiredJwt(String message, boolean status) {
 		super();
 		this.message = message;
 		this.status = status;
@@ -39,8 +34,4 @@ public class EmpNotFoundException extends RuntimeException {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-	
-	
 }

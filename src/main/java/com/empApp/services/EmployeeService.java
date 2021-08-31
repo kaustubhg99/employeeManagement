@@ -16,8 +16,13 @@ public class EmployeeService {
 	EmployeeRepository repository;
 	
 	public boolean saveEmployee(Employee emp) {
-		repository.save(emp);
-		return true;
+		Employee empAdded = repository.save(emp);
+		
+		if(empAdded!=null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	public List<Employee> getEmployees(){
@@ -28,5 +33,24 @@ public class EmployeeService {
 		
 		return repository.findById(id).orElseThrow(
 				() -> new EmpNotFoundException("Employee Id not exists in Database", false));
+	}
+
+	public boolean updateEmployee(Employee emp) {
+		
+		repository.findById(emp.getEmp_Id()).orElseThrow(
+				() -> new EmpNotFoundException("Employee not exist with id "+emp.getEmp_Id(), false));
+		/*
+		 * existingEmp.setEmp_FirstName(emp.getEmp_FirstName());
+		 * existingEmp.setEmp_LastName(emp.getEmp_LastName());
+		 * existingEmp.setEmp_DOB(emp.getEmp_DOB());
+		 * existingEmp.setEmp_Salary(emp.getEmp_Salary());
+		 * existingEmp.getDept().setDept_Id(emp.getDept().getDept_Id());
+		 * existingEmp.getDept().setDept_Name(emp.getDept().getDept_Name());
+		 */
+		
+		repository.save(emp);
+		
+		return true;
+		
 	}
 }

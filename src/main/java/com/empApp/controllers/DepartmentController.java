@@ -34,19 +34,21 @@ public class DepartmentController {
 	
 	@GetMapping("/getDepartments/{id}")
 	public ResponseEntity<ApiResponse> getDepartmentById(@PathVariable("id") Integer id){
-		
+
 		Department dept = service.getDepartmentById(id);
 		ApiResponse response = new ApiResponse(dept, new ResponseStatus(new Date(), "", true));
 		return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/addDepartment")
-	public ResponseEntity<String> addNewDepartment(@RequestBody Department dept) {
+	public ResponseEntity<ApiResponse> addNewDepartment(@RequestBody Department dept) {
 		 
 		if (service.saveDepartment(dept)==true) {
-			return new ResponseEntity<>("Department Added", HttpStatus.OK);
+			ApiResponse response = new ApiResponse(dept, new ResponseStatus(new Date(), "New Department Added", true));
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		}else {
-			return new ResponseEntity<>("Department Added", HttpStatus.BAD_REQUEST);
+			ApiResponse response = new ApiResponse(null, new ResponseStatus(new Date(), "failed to add new Department", false));
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		 
 	}
