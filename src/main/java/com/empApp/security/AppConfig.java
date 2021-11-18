@@ -1,6 +1,7 @@
 package com.empApp.security;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,8 +21,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.empApp.services.CustomUserDetailsService;
 
@@ -42,10 +46,12 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.csrf().disable()
-		.cors().disable()
+		.cors()
+		.and()
 		.authorizeRequests()
 			.antMatchers("/emp/api/v1/public/**").permitAll()
-			.antMatchers("/emp/api/v1/emp/**").hasRole("ADMIN")
+			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+			.antMatchers(HttpMethod.OPTIONS,"/emp/api/v1/emp/**").hasRole("ADMIN")
 			.antMatchers("/emp/api/v1/dept/**").hasRole("USER")
 		.anyRequest().authenticated()
 		.and()
@@ -109,7 +115,20 @@ public class AppConfig extends WebSecurityConfigurerAdapter{
 	         
 	        return authProvider;
 	    }
-
+	 
+	 @Bean   
+	 public CorsConfigurationSource corsConfigurationSource() {
+	     CorsConfiguration configuration = new CorsConfiguration();
+	     configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+	     configuration.setAllowCredentials(true);
+	     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+	     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+	     configuration.setExposedHeaders(Arrays.asList("custom-header1", "custom-header2"));
+	     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	     source.registerCorsConfiguration("/**", configuration); 
+	     return source; 
+	 }
+	 
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
